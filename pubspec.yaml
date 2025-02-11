@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   animated_toggle_switch: ^0.8.4
   icons_plus: ^5.0.0
+  google_sign_in: ^5.4.0
 
   intl: any
   provider: ^6.1.2

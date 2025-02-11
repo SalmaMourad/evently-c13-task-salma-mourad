@@ -51,6 +51,39 @@ class EventsDao {
       return DataBaseResponse(isSuccess: false, exception: ex);
     }
   }
+static Future<DataBaseResponse<EventModel>> editEvent(
+  String userId,
+  String eventId, // Added eventId to identify which event to update
+  String title,
+  String description,
+  DateTime date,
+  int time,
+  int eventType,
+  double? lat,
+  double? lng,
+) async {
+  var docRef = getEventsCollection(userId).doc(eventId); // Reference existing event
+
+  var event = EventModel(
+    id: docRef.id, // Keep the same event ID////////
+    title: title,
+    description: description,
+    date: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
+    time: time,
+    lat: null,
+    long: null,
+    eventTypeId: eventType,
+  );
+
+  try {
+    await docRef.update(event as Map<Object, Object?>); // Update instead of adding a new doc
+    print('Updating event complete');
+    return DataBaseResponse(isSuccess: true, data: event);
+  } on Exception catch (ex) {
+    print('Exception: $ex');
+    return DataBaseResponse(isSuccess: false, exception: ex);
+  }
+}
 
   static Future<DataBaseResponse<List<EventModel>>> loadEvents(
       String userId, int categoryId) async {
@@ -79,10 +112,10 @@ class EventsDao {
     }
   }
 
-  static Future<void> updateEvent(String userId, EventModel event) async {
-    var docRef = getEventsCollection(userId).doc(event.id);
-    await docRef.set(event);
-  }
+  // static Future<void> updateEvent(String userId, EventModel event, String text, String text, [String text]) async {
+  //   var docRef = getEventsCollection(userId).doc(event.id);
+  //   await docRef.set(event);
+  // }
 
   static Future<DataBaseResponse<List<EventModel>>> loadFavoriteEvents(
       String userId) async {

@@ -10,12 +10,16 @@ class AuthProvider extends ChangeNotifier {
   AuthProvider() {
     firebaseAuthUser = FirebaseAuth.instance.currentUser;
     if (firebaseAuthUser != null) {
+    print(firebaseAuthUser!.uid);
+
       readUser();
     }
   }
 
   void readUser() async {
     appUser = await UsersDao.readUser(firebaseAuthUser!.uid);
+    print(firebaseAuthUser!.uid);
+
     notifyListeners();
   }
 
@@ -32,6 +36,7 @@ class AuthProvider extends ChangeNotifier {
   void saveUser(AppUser? user) {
     appUser = user;
     firebaseAuthUser = FirebaseAuth.instance.currentUser;
+    print(firebaseAuthUser);
     notifyListeners();
   }
 }

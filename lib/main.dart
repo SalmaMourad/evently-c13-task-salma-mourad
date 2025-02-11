@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      // themeMode: themeProvider.currentTheme,
+      themeMode: themeProvider.currentTheme,
       initialRoute: authProvider.isLoggedIn()
           ? HomeScreen.routeName
           : SetupScreen.routeName,

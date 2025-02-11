@@ -44,7 +44,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
   void onFavoriteCallBack(EventModel event) async {
     event.isFavorite = !event.isFavorite;
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await EventsDao.updateEvent(authProvider.appUser?.id ?? "", event);
+    // await EventsDao.editEvent(authProvider.appUser?.id ?? "", event);
     setState(() {});
   }
 }

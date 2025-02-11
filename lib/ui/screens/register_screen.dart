@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   var rePasswordController = TextEditingController();
 
-  bool isLoading = false;
+  bool isLoading = false;//////////////////////////////////
 
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,8 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:evently_c13/l10n/app_translations.dart';
 import 'package:evently_c13/core/dialog_utils.dart';
 import 'package:provider/provider.dart';
+import '../../auth/google_auth.dart';
+// import 'auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = "/LoginScreen";
@@ -29,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var passwordController = TextEditingController();
 
   bool isLoading = false;
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +164,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 FilledButton(
-                  onPressed: () {},
+                 onPressed: () async {
+            final user = await _authService.signInWithGoogle();
+            if (user != null) {
+              print("Signed in: ${user.displayName}"); Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            }
+          },
                   style: FilledButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       foregroundColor: Theme.of(context).primaryColor,

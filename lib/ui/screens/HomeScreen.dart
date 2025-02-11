@@ -56,8 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    var authProvider = Provider.of<AuthProvider>(context);
+    var authProvider = Provider.of<AuthProvider>(context,listen: false);
     print(authProvider.appUser);
+    print('hiiiiiiiiiiii');
     return SafeArea(
       child: DefaultTabController(
         length: eventTypes.length,
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ...eventTypes.map((eventType) => Padding(
                       padding: const EdgeInsets.all(10),
                       child: Row(
-                        spacing: 8,
+                        // spacing: 8,/////////////
                         children: [eventType.icon, Text(eventType.name)],
                       ),
                     ))
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Column buildAppBarTitle(AppUser? appUser) {
     return Column(
-      spacing: 4,
+      // spacing: 4,//////////////////////////////////////////////////////////////////////////////
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -186,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fontWeight: FontWeight.w400),
         ),
         Text(
-          appUser?.name ?? "",
+          appUser?.name ?? "s",
           style: TextStyle(
               fontSize: 25,
               color: AppColors.white,

@@ -18,10 +18,10 @@ class SetupScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(
-                AppAssets.appHorizontalLogoImage,
-                height: MediaQuery.sizeOf(context).height * .07,
-              ),
+              // Image.asset(
+              //   AppAssets.appHorizontalLogoImage,
+              //   height: MediaQuery.sizeOf(context).height * .07,
+              // ),
               const SizedBox(
                 height: 10,
               ),
