@@ -15,6 +15,8 @@ import 'package:evently_c13/ui/widgets/events_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'add_edit_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = "home";
 
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               side: BorderSide(color: AppColors.white, width: 5),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, AddEventScreen.routeName);
+              Navigator.pushNamed(context, AddEditEventScreen.routeName);
             },
             backgroundColor: AppColors.purple,
             child: const Icon(

@@ -6,6 +6,8 @@ import 'package:evently_c13/l10n/DateTimeUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'events_details.dart';
+
 typedef OnFavoriteCallBack = void Function(EventModel event);
 
 class EventItem extends StatelessWidget {
@@ -17,24 +19,34 @@ class EventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return Container(
-      height: height * 0.25,
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          image: DecorationImage(
-            image: AssetImage(
-              EventType.getEventImageById(event.eventTypeId ?? 0),
-            ),
-          )),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildDateContainer(event.date),
-          const Spacer(),
-          buildTitleContainer(context)
-        ],
+    return InkWell(
+      onTap: () {
+         Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => EventDetailsScreen(event: event),
+    ),
+  );
+      },
+      child: Container(
+        height: height * 0.25,
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            image: DecorationImage(
+              image: AssetImage(
+                EventType.getEventImageById(event.eventTypeId ?? 0),
+              ),
+            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildDateContainer(event.date),
+            const Spacer(),
+            buildTitleContainer(context)
+          ],
+        ),
       ),
     );
   }

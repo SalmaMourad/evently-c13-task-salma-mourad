@@ -1,3 +1,4 @@
+import 'package:evently_c13/ui/screens/add_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:evently_c13/db/model/event_model.dart';
 import 'package:evently_c13/db/model/event_type_model.dart';
@@ -12,7 +13,10 @@ class EventDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text( "Event Details"),
-        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.edit))],
+        actions: [IconButton(onPressed: (){
+
+          Navigator.pushNamed(context,AddEditEventScreen.routeName,arguments: event);
+        }, icon: Icon(Icons.edit))],
       ),
       body: SingleChildScrollView(
         child: Column(

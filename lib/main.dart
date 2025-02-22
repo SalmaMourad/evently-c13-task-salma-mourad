@@ -15,6 +15,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ui/screens/add_edit_screen.dart';
+import 'ui/widgets/events_details.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -43,6 +46,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    
     LanguageProvider languageProvider = Provider.of<LanguageProvider>(context);
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
@@ -61,12 +65,13 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(languageProvider.currentLocale),
       routes: {
-        AddEventScreen.routeName: (_) => const AddEventScreen(),
+        AddEditEventScreen.routeName: (_) => const AddEditEventScreen(),
         HomeScreen.routeName: (_) => const HomeScreen(),
         SetupScreen.routeName: (_) => const SetupScreen(),
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
-        ForgetPassword.routeName: (_) => const ForgetPassword()
+        ForgetPassword.routeName: (_) => const ForgetPassword(),
+        // EventDetails.routeName:(_)=> EventDetails(),
       },
     );
   }
