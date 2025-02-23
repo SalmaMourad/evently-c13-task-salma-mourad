@@ -29,8 +29,9 @@ class EventsDao {
     DateTime date,
     int time,
     int eventType,
-    double? lat,
-    double? lng,
+    GeoPoint ?geoPoint,
+    // double? lat,
+    // double? lng,
   ) async {
     var docRef = getEventsCollection(userId).doc();
     var event = EventModel(
@@ -39,8 +40,7 @@ class EventsDao {
         description: description,
         date: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
         time: time,
-        lat: null,
-        long: null,
+        geoPoint: GeoPoint(29.9956081, 31.1310941),
         eventTypeId: eventType);
     try {
       await docRef.set(event);
@@ -60,8 +60,9 @@ class EventsDao {
     DateTime date,
     int time,
     int eventType,
-    double? lat,
-    double? lng,
+    GeoPoint geoPoint,
+    // double? lat,
+    // double? lng,
   ) async {
     var docRef =
         getEventsCollection(userId).doc(eventId); // Reference existing event
@@ -72,8 +73,9 @@ class EventsDao {
       description: description,
       date: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
       time: time,
-      lat: null,
-      long: null,
+      geoPoint: GeoPoint(29.9956081, 31.1310941),
+      // lat: null,
+      // long: null,
       eventTypeId: eventType,
     );
 

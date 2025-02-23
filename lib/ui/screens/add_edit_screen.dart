@@ -377,8 +377,8 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
         selectedDate!,
         selectedTime!.millisecondsSinceEpoch,
         eventTypes[selexctedIndex].id,
-        null,
-        null);
+        
+        GeoPoint(29.9956081, 31.1310941));
     print('adding in add event');
 
     hideDialog();

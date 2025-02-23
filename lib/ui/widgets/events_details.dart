@@ -54,10 +54,10 @@ class EventDetailsScreen extends StatelessWidget {
                     "Date: ${event.date?.toDate()}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ), Text(
-                    "lat: ${event.lat}",
+                    "lat: ${event.geoPoint?.latitude ??""}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ), Text(
-                    "long: ${event.long}",
+                    "long: ${event.geoPoint?.longitude ??""}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 10),
