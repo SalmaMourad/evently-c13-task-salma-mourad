@@ -9,12 +9,14 @@ import 'package:evently_c13/ui/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:evently_c13/core/dialog_utils.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'tabs/map/map_tab.dart';
 
 class AddEditEventScreen extends StatefulWidget {
   static const String routeName = "add_event";
-  const AddEditEventScreen({super.key});
-
+  const AddEditEventScreen({super.key, required this.events});
+  final List<EventModel> events;
   @override
   State<AddEditEventScreen> createState() => _AddEditEventScreenState();
 }
@@ -24,43 +26,46 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
   List<EventType> eventTypes = [];
   late TextEditingController titleController = TextEditingController();
   late TextEditingController descriptionController = TextEditingController();
-   EventModel? eventModel;
+  EventModel? eventModel;
+  LatLng? pickedLocation;
+
   @override
   void initState() {
     super.initState();
     var types = EventType.getEventTypes();
     types.removeAt(0);
     eventTypes = types;
-    WidgetsBinding.instance.addPostFrameCallback((_){
- eventModel = ModalRoute.of(context)!.settings.arguments as EventModel;
-    if (eventModel != null) {
-      titleController = TextEditingController(text: eventModel?.title ?? "");
-      descriptionController =
-          TextEditingController(text: eventModel?.description ?? "");
-      selectedDate = DateTime.fromMillisecondsSinceEpoch(
-          eventModel!.date?.millisecondsSinceEpoch ?? 0);
-      selectedTime = DateTime(
-          0,
-          0,
-          0,
-          DateTime.fromMillisecondsSinceEpoch(eventModel!.time!).hour,
-          DateTime.fromMillisecondsSinceEpoch(eventModel!.time!).minute);
-      selexctedIndex = eventTypes.indexWhere((type) {
-        return type.id == eventModel?.eventTypeId;
-      });
-    }setState(() {
-      
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is EventModel) {
+        eventModel = args;
+      }
+
+      if (eventModel != null) {
+        titleController = TextEditingController(text: eventModel!.title);
+        descriptionController =
+            TextEditingController(text: eventModel!.description);
+
+        selectedDate = DateTime.fromMillisecondsSinceEpoch(
+            eventModel!.date?.millisecondsSinceEpoch ?? 0);
+
+        selectedTime = DateTime(
+            0,
+            0,
+            0,
+            DateTime.fromMillisecondsSinceEpoch(eventModel!.time!).hour,
+            DateTime.fromMillisecondsSinceEpoch(eventModel!.time!).minute);
+
+        selexctedIndex = eventTypes.indexWhere((type) {
+          return type.id == eventModel?.eventTypeId;
+        });
+      }
+
+      setState(() {});
     });
-    });
-    
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-   
-  }
   // @override
   // void didChangeDependancies() {
   //   super.didChangeDependencies();
@@ -81,7 +86,6 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              // spacing: 22,//////////////////////////////////////////////////////////////////////////////
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(20),
@@ -112,18 +116,16 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                 ),
                 buildChooseDate(),
                 buildChooseTime(),
-                const Text(
-                  "Location",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
-                      fontSize: 18),
+                Text(
+                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  pickedLocation != null
+                      ? "Location Selected: ( latitude:${pickedLocation!.latitude}, longitude: ${pickedLocation!.longitude})"
+                      : "Location not picked yet",
                 ),
                 buildChooseLocation(),
                 ElevatedButton(
                     onPressed: () {
-                      eventModel==null?
-                      addEvent():updateEvent();
+                      eventModel == null ? addEvent() : updateEvent();
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -131,8 +133,8 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                         backgroundColor: AppColors.purple,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 10)),
-                    child:  Text(eventModel==null?
-                      "Add Event":'update Event',
+                    child: Text(
+                      eventModel == null ? "Add Event" : 'update Event',
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )),
               ],
@@ -150,26 +152,40 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: AppColors.purple),
       ),
-      child: Row(
-          // spacing: 8,//////////////////////////////////////////////////////////////////////////////
-          children: [
-            Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.purple,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: AppColors.white,
-                )),
-            const Text("Choose Event Location"),
-            const Spacer(),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: AppColors.purple,
-            )
-          ]),
+      child: InkWell(
+        onTap: () async {
+          LatLng? selectedLoc = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    MapTab(events: widget.events, isbutton: true)),
+          );
+
+          if (selectedLoc != null) {
+            setState(() {
+              pickedLocation = selectedLoc;
+            });
+          }
+        },
+        child: Row(children: [
+          Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.purple,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.location_on,
+                color: AppColors.white,
+              )),
+          const Text("Choose Event Location"),
+          const Spacer(),
+          const Icon(
+            Icons.arrow_forward_ios,
+            color: AppColors.purple,
+          )
+        ]),
+      ),
     );
   }
 
@@ -330,16 +346,17 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
     print(authProvider.appUser?.id);
     var response = await EventsDao.updateEvent(
         userId: authProvider.appUser?.id ?? "",
-       
         event: EventModel(
           date: Timestamp.fromDate(selectedDate!),
           description: descriptionController.text,
           title: titleController.text,
-          time:  selectedTime!.millisecondsSinceEpoch,
-        eventTypeId:  eventTypes[selexctedIndex].id,
-        id: eventModel?.id,
-        // null,
-        // null/,
+          time: selectedTime!.millisecondsSinceEpoch,
+          eventTypeId: eventTypes[selexctedIndex].id,
+          id: eventModel?.id,
+          geoPoint:
+              GeoPoint(pickedLocation!.latitude, pickedLocation!.longitude),
+          // null,
+          // null/,
         ));
     print('updating in add event');
 
@@ -362,36 +379,38 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
       hasValidTime = selectedTime != null;
       hasValidDate = selectedDate != null;
     });
+
     if (formKey.currentState?.validate() == false ||
-        !hasValidTime && !hasValidDate) {
+        !hasValidTime && !hasValidDate ||
+        pickedLocation == null) {
+      showMessageDialog("Please select a location for the event.",
+          posActionTitle: "OK");
       return;
     }
 
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     showLoadingDialog("Loading...");
-    print(authProvider.appUser?.id);
+
     var response = await EventsDao.addEvent(
-        authProvider.appUser?.id ?? "",
-        titleController.text,
-        descriptionController.text,
-        selectedDate!,
-        selectedTime!.millisecondsSinceEpoch,
-        eventTypes[selexctedIndex].id,
-        
-        GeoPoint(29.9956081, 31.1310941));
-    print('adding in add event');
+      authProvider.appUser?.id ?? "",
+      titleController.text,
+      descriptionController.text,
+      selectedDate!,
+      selectedTime!.millisecondsSinceEpoch,
+      eventTypes[selexctedIndex].id,
+      GeoPoint(pickedLocation!.latitude, pickedLocation!.longitude),
+    );
 
     hideDialog();
-    print('$response');
 
     if (response.isSuccess) {
       showMessageDialog(
         "Event Successfully Added",
-        posActionTitle: "ok",
-        posAction: () => {Navigator.pop(context)},
+        posActionTitle: "OK",
+        posAction: () => Navigator.pop(context),
       );
     } else {
-      showMessageDialog(response.getErrorMessage(), posActionTitle: "ok");
+      showMessageDialog(response.getErrorMessage(), posActionTitle: "OK");
     }
   }
 

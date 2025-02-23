@@ -40,7 +40,7 @@ class EventsDao {
         description: description,
         date: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
         time: time,
-        geoPoint: GeoPoint(29.9956081, 31.1310941),
+        geoPoint: GeoPoint(geoPoint?.latitude??0, geoPoint?.longitude??0),
         eventTypeId: eventType);
     try {
       await docRef.set(event);
@@ -73,7 +73,7 @@ class EventsDao {
       description: description,
       date: Timestamp.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch),
       time: time,
-      geoPoint: GeoPoint(29.9956081, 31.1310941),
+      geoPoint: GeoPoint(geoPoint?.latitude??0, geoPoint?.longitude??0),
       // lat: null,
       // long: null,
       eventTypeId: eventType,

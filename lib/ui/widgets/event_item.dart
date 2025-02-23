@@ -13,8 +13,9 @@ typedef OnFavoriteCallBack = void Function(EventModel event);
 class EventItem extends StatelessWidget {
   EventModel event;
   OnFavoriteCallBack onFavoriteCallBack;
+  final List<EventModel> events; 
 
-  EventItem(this.event, this.onFavoriteCallBack, {super.key});
+  EventItem(this.event, this.onFavoriteCallBack, {super.key, required this.events});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class EventItem extends StatelessWidget {
          Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => EventDetailsScreen(event: event),
+      builder: (context) => EventDetailsScreen(event: event, events: events,),
     ),
   );
       },

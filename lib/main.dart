@@ -4,7 +4,6 @@ import 'package:evently_c13/providers/AuthProvider.dart';
 import 'package:evently_c13/providers/language_provider.dart';
 import 'package:evently_c13/providers/theme_provider.dart';
 import 'package:evently_c13/ui/screens/HomeScreen.dart';
-import 'package:evently_c13/ui/screens/add_event_screen.dart';
 import 'package:evently_c13/ui/screens/forget_password.dart';
 import 'package:evently_c13/ui/screens/login_screen.dart';
 import 'package:evently_c13/ui/screens/register_screen.dart';
@@ -14,9 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'ui/screens/add_edit_screen.dart';
-import 'ui/widgets/events_details.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +41,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     
@@ -65,13 +62,13 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(languageProvider.currentLocale),
       routes: {
-        AddEditEventScreen.routeName: (_) => const AddEditEventScreen(),
+        AddEditEventScreen.routeName: (_) => const AddEditEventScreen(events: [],),
         HomeScreen.routeName: (_) => const HomeScreen(),
         SetupScreen.routeName: (_) => const SetupScreen(),
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
         ForgetPassword.routeName: (_) => const ForgetPassword(),
-        // EventDetails.routeName:(_)=> EventDetails(),
+
       },
     );
   }

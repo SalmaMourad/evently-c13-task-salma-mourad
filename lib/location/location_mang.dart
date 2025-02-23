@@ -11,9 +11,6 @@ class LocationMang {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
-      // if (!_serviceEnabled) {
-      //   return;
-      // }
     }
     return _serviceEnabled;
   }
@@ -22,21 +19,17 @@ class LocationMang {
     PermissionStatus _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
-      // if (_permissionGranted != PermissionStatus.granted) {
-      //   return;
-      // }
     }
     return _permissionGranted == PermissionStatus.granted;
   }
 
   Future<bool> isCanHaveLocation() async {
-    final serviceEnabled=await isLocServiceEnabled();
-    final permissionGranted =await isLocPermissionGranted();
+    final serviceEnabled = await isLocServiceEnabled();
+    final permissionGranted = await isLocPermissionGranted();
     return serviceEnabled && permissionGranted;
   }
-  Future <LocationData> getUserLocation()async{
-    // _locationData=await location.getLocation();
+
+  Future<LocationData> getUserLocation() async {
     return location.getLocation();
   }
-// _locationData = await location.getLocation();
 }

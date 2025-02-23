@@ -14,7 +14,7 @@ class EventsListView extends StatelessWidget {
     return ListView.builder(
       itemCount: events.length,
       itemBuilder: (context, index) {
-        return EventItem(events[index], onFavoriteCallBack);
+        return EventItem(events[index], onFavoriteCallBack,events: events,);
       },
     );
   }
