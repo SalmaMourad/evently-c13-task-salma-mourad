@@ -34,7 +34,7 @@ class EventItem extends StatelessWidget {
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
             image: DecorationImage(
               image: AssetImage(
                 EventType.getEventImageById(event.eventTypeId ?? 0),
@@ -54,6 +54,8 @@ class EventItem extends StatelessWidget {
 
   Container buildTitleContainer(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -84,6 +86,7 @@ class EventItem extends StatelessWidget {
 
   Container buildDateContainer(Timestamp? timeStamp) {
     return Container(
+      margin: EdgeInsets.only(left: 10),
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
         color: Colors.white,

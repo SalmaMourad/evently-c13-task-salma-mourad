@@ -83,7 +83,7 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
         key: formKey,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -92,7 +92,10 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     child: Image.asset(
                       eventTypes[selexctedIndex].imagePath,
                     )),
+                    SizedBox(height: 10,),
                 buildEventTypesListView(),
+                    SizedBox(height: 10,),
+
                 CustomTextFormField(
                   controller: titleController,
                   labelText: 'Title',
@@ -103,6 +106,8 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     }
                   },
                 ),
+                    SizedBox(height: 10,),
+
                 CustomTextFormField(
                   controller: descriptionController,
                   labelText: 'description',
@@ -114,15 +119,24 @@ class _AddEditEventScreenState extends State<AddEditEventScreen> {
                     }
                   },
                 ),
+                    SizedBox(height: 10,),
+
                 buildChooseDate(),
+                    SizedBox(height: 10,),
+
                 buildChooseTime(),
+                    SizedBox(height: 10,),
+
                 Text(
                   style: TextStyle(color: Colors.black, fontSize: 18),
                   pickedLocation != null
-                      ? "Location Selected: ( latitude:${pickedLocation!.latitude}, longitude: ${pickedLocation!.longitude})"
-                      : "Location not picked yet",
+                      ? " Location Selected: ( latitude:${pickedLocation!.latitude}, longitude: ${pickedLocation!.longitude})"
+                      : " Location not picked yet",
                 ),
+                
                 buildChooseLocation(),
+                    SizedBox(height: 10,),
+
                 ElevatedButton(
                     onPressed: () {
                       eventModel == null ? addEvent() : updateEvent();
